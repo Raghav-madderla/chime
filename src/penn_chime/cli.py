@@ -2,10 +2,9 @@
 
 import os
 import sys
-
 from .model.parameters import Parameters
 from .model.sir import Sir
-
+from penn_chime.model.ml_disease_prediction import MLDiseasePrediction
 
 def run(argv):
     """Eun cli."""
@@ -21,6 +20,26 @@ def run(argv):
         df.to_csv(f"{p.current_date}_{name}.csv")
 
 
+
+def run_ml(argv):
+    """Run the machine learning prediction model."""
+    print("ML model is running...")
+    try:
+        predictor = MLDiseasePrediction()
+        predictor.run()  
+        print("ML model finished running.") 
+    except Exception as e:
+        print(f"Error running ML model: {e}")
+
 def main():
-    """Main."""
-    run(sys.argv)
+    """Main entry point."""
+    print("Main function is called.") 
+    if len(sys.argv) > 1 and sys.argv[1] == "ml":
+        print("Running ML model from CLI...")
+        run_ml(sys.argv)
+    else:
+        print("Running SIR model from CLI...")  
+        run(sys.argv)
+
+if __name__ == "__main__":
+    main()
